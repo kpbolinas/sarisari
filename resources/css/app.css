@@ -1,0 +1,25 @@
+html,
+#app {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.btn-custom-color {
+    --bs-btn-color: #a52a2a;
+    --bs-btn-border-color: #a52a2a;
+    --bs-btn-hover-bg: #a52a2a;
+    --bs-btn-hover-border-color: #a52a2a;
+}
+
+.no-side-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.force-text-left {
+    text-align: left;
+}
