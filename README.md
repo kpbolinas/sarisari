@@ -1,11 +1,11 @@
 ### Sari Sari Store - Simple Ordering System
 
-#### TECHNOLOGY STACK
+#### TECHNOLOGY STACKS:
 - Laravel 10
 - PHP 8.1
 - Vue 3.2.37
 
-#### PRE-REQUISITES:
+#### PREREQUISITES:
 - PHP 8+
 - GIT https://git-scm.com/downloads
 - Composer https://getcomposer.org/download/
