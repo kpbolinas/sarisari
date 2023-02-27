@@ -122,30 +122,16 @@ export default {
   methods: {
     async checkout() {
       this.showSpinner = true;
-      // const formData = {
-      //   items: this.products.items,
-      //   total_price: this.products.totalPrice,
-      // };
       const formData = {
-        items: [
-          {
-            item: {
-              'id': 1000,
-              'name': 'Jellyace',
-              'price': '23',
-            },
-            'quantity': 1,
-            'total': '23',
-          },
-        ],
-        'total_price':'23'
+        items: this.products.items,
+        total_price: this.products.totalPrice,
       };
       await OrderApiService.checkout(formData)
         .then((response) => {
           const { message } = response.data;
           this.displayToast(message, "text-bg-success");
-          // Cart.clear();
-          // this.products = Cart.data;
+          Cart.clear();
+          this.products = Cart.data;
         })
         .catch(({ response }) => {
             this.showSpinner = false;
