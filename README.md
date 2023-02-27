@@ -23,8 +23,8 @@
 - Execute the command 'docker-compose exec main php artisan migrate:fresh --seed' to run the database migration files and seeders
 
 Go to http://localhost:8000/
-Mailpit link http://localhost:8025/
-Mailpit reference: https://laravel.com/docs/10.x/sail#previewing-emails
+
+Mailpit link http://localhost:8025/ (Reference: https://laravel.com/docs/10.x/sail#previewing-emails)
 
 #### ACCOUNTS AVAILABLE:
 
