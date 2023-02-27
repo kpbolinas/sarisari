@@ -6,7 +6,7 @@ use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
-use App\Http\Requests\EditInfoRequest;
+use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\ProfileResource;
@@ -214,12 +214,12 @@ class UserController extends Controller
     }
 
     /**
-     * Edit info api
+     * Update info api
      *
-     * @param \App\Http\Requests\EditInfoRequest $request
+     * @param \App\Http\Requests\UpdateInfoRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function editInfo(EditInfoRequest $request)
+    public function updateInfo(UpdateInfoRequest $request)
     {
         try {
             $data = $request->validated();

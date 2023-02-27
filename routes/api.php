@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/profile', [UserController::class, 'profile']);
     Route::patch('/change-password', [UserController::class, 'changePassword']);
-    Route::patch('/edit-info', [UserController::class, 'editInfo']);
+    Route::patch('/update-info', [UserController::class, 'updateInfo']);
     Route::delete('/delete-account', [UserController::class, 'delete']);
 
     // API routes for products

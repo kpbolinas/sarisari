@@ -91,7 +91,7 @@ import Router from "../../router";
 import UserApiService from "../services/user";
 
 export default {
-  name: "EditInfo",
+  name: "UpdateInfo",
   emits: ["modalShow", "reloadProfile", "displaySpinner", "displayToast"],
   props: {
     info: {
@@ -116,7 +116,7 @@ export default {
         first_name: this.firstName,
         last_name: this.lastName,
       };
-      await UserApiService.editInfo(formData)
+      await UserApiService.updateInfo(formData)
         .then((response) => {
           const { message } = response.data;
           this.$emit("displayToast", message, "text-bg-success");

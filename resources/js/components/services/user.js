@@ -14,9 +14,9 @@ export default class UserApiService {
     // Profile API
     static profile = () => window.axios.get("/api/profile");
 
-    // Edit Info API
-    static editInfo = (requestData) =>
-        window.axios.patch("/api/edit-info", requestData);
+    // Update Info API
+    static updateInfo = (requestData) =>
+        window.axios.patch("/api/update-info", requestData);
 
     // Change Password API
     static changePassword = (requestData) =>

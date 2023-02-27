@@ -16,6 +16,11 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        // Truncate Expert Attribute
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('users')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         $now = Carbon::now();
         // Insert pre-defined attributes
         DB::table('users')->insert([

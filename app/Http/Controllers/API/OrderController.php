@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderRequest;
 use App\Jobs\OrderNotificationJob;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     /**
      * Checkout api
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\OrderRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function checkout(Request $request)
+    public function checkout(OrderRequest $request)
     {
         $user = $request->user();
-        $data = $request->all();
+        $data = $request->validated();
         $mailData = [
             'user' => [
                 'email' => $user->email,
@@ -28,6 +28,6 @@ class OrderController extends Controller
         ];
         OrderNotificationJob::dispatch($mailData);
 
-        return response()->respondSuccess([$mailData], 'Order received.');
+        return response()->respondSuccess([], 'Order received.');
     }
 }
