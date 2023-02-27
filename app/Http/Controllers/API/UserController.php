@@ -10,15 +10,14 @@ use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\ProfileResource;
-use App\Mail\DeleteAccountMail;
-use App\Mail\ForgotPasswordMail;
-use App\Mail\RegistrationMail;
+use App\Jobs\DeleteAccountJob;
+use App\Jobs\ForgotPasswordJob;
+use App\Jobs\RegistrationJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 use Throwable;
@@ -45,24 +44,15 @@ class UserController extends Controller
             $user = User::create($data);
 
             if ($user) {
-                $to = (object) [
-                    'email' => $data['email'],
-                    'name' => $data['first_name'] . ' ' . $data['last_name'],
-                ];
                 $mailData = [
-                    'email' => $data['email'],
-                    'username' => $data['username'],
+                    'email' => $user->email,
+                    'username' => $user->username,
+                    'name' => $user->first_name . ' ' . $user->last_name,
                 ];
-                $mail = Mail::to($to)->send(new RegistrationMail($mailData));
+                RegistrationJob::dispatch($mailData);
+                DB::commit();
 
-                if ($mail) {
-                    DB::commit();
-
-                    return response()->respondSuccess([], 'Registration successful.');
-                }
-                DB::rollBack();
-
-                return response()->respondBadRequest([], 'Registration failed. Unable to send email.');
+                return response()->respondSuccess([], 'Registration successful.');
             }
             DB::rollBack();
 
@@ -149,22 +139,16 @@ class UserController extends Controller
                 $user->password = Hash::make($tempPass);
 
                 if ($user->save()) {
-                    $to = (object) [
-                        'email' => $user->email,
-                        'name' => $user->first_name . ' ' . $user->last_name,
-                    ];
                     $mailData = [
                         'email' => $user->email,
                         'username' => $user->username,
+                        'name' => $user->first_name . ' ' . $user->last_name,
                         'temporary_password' => $tempPass,
                     ];
-                    $mail = Mail::to($to)->send(new ForgotPasswordMail($mailData));
+                    ForgotPasswordJob::dispatch($mailData);
+                    DB::commit();
 
-                    if ($mail) {
-                        DB::commit();
-
-                        return response()->respondSuccess([], 'Email sent.');
-                    }
+                    return response()->respondSuccess([], 'Email sent.');
                 }
                 DB::rollBack();
 
@@ -260,24 +244,15 @@ class UserController extends Controller
                     $token = PersonalAccessToken::findToken($accessToken);
 
                     if ($token && $token->delete()) {
-                        $to = (object) [
-                            'email' => $user->email,
-                            'name' => $user->first_name . ' ' . $user->last_name,
-                        ];
                         $mailData = [
                             'email' => $user->email,
                             'username' => $user->username,
+                            'name' => $user->first_name . ' ' . $user->last_name,
                         ];
-                        $mail = Mail::to($to)->send(new DeleteAccountMail($mailData));
-
-                        if ($mail) {
-                            DB::commit();
-
-                            return response()->respondSuccess([], 'Account has been permanently deleted.');
-                        }
-                        DB::rollBack();
-
-                        return response()->respondBadRequest([], 'Something went wrong. Unable to send email.');
+                        DeleteAccountJob::dispatch($mailData);
+                        DB::commit();
+    
+                        return response()->respondSuccess([], 'Account has been permanently deleted.');
                     }
                 }
             }
